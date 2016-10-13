@@ -1,0 +1,26 @@
+{
+  "name": "config",
+  "version": "1.0.0",
+  "description": "A module that reads configuration files from disks",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Cheevr/Config.git"
+  },
+  "keywords": [
+    "configuration",
+    "environment",
+    "settings",
+    "tier"
+  ],
+  "author": "Ravi Gairola <ravi@cheevr.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Cheevr/Config/issues"
+  },
+  "homepage": "https://github.com/Cheevr/Config#readme"
+}
