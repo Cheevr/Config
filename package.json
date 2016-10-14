@@ -5,7 +5,10 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover _mocha -- --recursive"
+  },
+  "engine": {
+    "node": ">=6.4"
   },
   "repository": {
     "type": "git",
@@ -22,5 +25,13 @@
   "bugs": {
     "url": "https://github.com/Cheevr/Config/issues"
   },
-  "homepage": "https://github.com/Cheevr/Config#readme"
+  "homepage": "https://github.com/Cheevr/Config#readme",
+  "devDependencies": {
+    "chai": "^3",
+    "istanbul": "^0.4",
+    "mocha": "^3"
+  },
+  "dependencies": {
+    "minimist": "^1"
+  }
 }
