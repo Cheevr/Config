@@ -6,13 +6,13 @@ describe('tiers', () => {
     it('should set the tier to development by default', () => {
         config.reload();
         expect(config.tier).to.equal('development');
-        expect(config.dir).to.equal(path.join(require.main.filename, 'config'));
+        expect(config.dir).to.equal(path.join(path.dirname(require.main.filename), 'config'));
     });
 
     it('should reload the configuration from a new directory', () => {
         config.reload('prod', 'testconfig');
         expect(config.tier).to.equal('prod');
-        expect(config.dir).to.equal(path.join(require.main.filename, 'testconfig'));
+        expect(config.dir).to.equal(path.join(path.dirname(require.main.filename), 'testconfig'));
     });
 
     it('should load the default configuration', () => {

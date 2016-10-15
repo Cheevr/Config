@@ -4,6 +4,11 @@ var path = require('path');
 
 
 /**
+ * The root directory of the code that is being run right now.
+ */
+const cwd = path.dirname(require.main.filename);
+
+/**
  * Configurations will be loaded based on the prefix given through the tier, meaning that tier d would resolve to
  * the file that starts with d (excluding the default and override files).
  * Default files can be specified using command line arguments, environment variables, or using the reload functionality:
@@ -22,6 +27,10 @@ var path = require('path');
  *
  */
 class Config {
+    constructor() {
+        this._load(this.tier);
+    }
+
     /**
      * Loads the configurations from the file system and makes them available on the object.
      * @param {string} tier
@@ -78,7 +87,7 @@ class Config {
         if (this._dir) {
             return this._dir;
         }
-        this._dir = process.env.NODE_CONF_DIR || path.join(require.main.filename, 'config');
+        this._dir = process.env.NODE_CONF_DIR || path.join(cwd, 'config');
         this._dir = args.directory || args.dir || args.d || this._dir;
         return this._dir;
     }
@@ -117,7 +126,7 @@ class Config {
      */
     reload(tier = this.tier, dir = this._dir, override) {
         delete this._tier;
-        this._dir = path.isAbsolute(dir) ? dir : path.join(require.main.filename, dir);
+        this._dir = path.isAbsolute(dir) ? dir : path.join(cwd, dir);
         this._override = override;
         this.tier = tier;
     }
