@@ -55,4 +55,16 @@ describe('tiers', () => {
         expect(config.devprop).to.be.ok;
         expect(config.stagingprop).to.be.not.ok;
     });
+
+    it('should know that this is not production env', () => {
+        config.reload('d', path.join(__dirname, 'data'));
+        expect(config.tier).to.equal('development');
+        expect(config.isProd).to.be.false;
+    });
+
+    it('should know that this is production env', () => {
+        config.reload('p', path.join(__dirname, 'data'));
+        expect(config.tier).to.equal('prod');
+        expect(config.isProd).to.be.true;
+    });
 });

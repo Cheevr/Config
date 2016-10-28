@@ -57,6 +57,7 @@ class Config {
         } catch(e) {
             this._tier = tier;
         }
+        this.prodNames = this.prodNames || ['production', 'prod', 'p'];
     }
 
     /**
@@ -116,6 +117,14 @@ class Config {
         this._default = process.env.NODE_CONF_DEFAULT || 'default.';
         this._default = args.s || args.default || this._default;
         return this._default;
+    }
+
+    /**
+     * Returns wether the current config is for production tier or not.
+     * @returns {boolean}
+     */
+    get isProd() {
+        return this.prodNames.indexOf(this.tier) !== -1
     }
 
     /**
