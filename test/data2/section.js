@@ -1,0 +1,3 @@
+module.exports = {
+    subtype: 'subsection'
+};

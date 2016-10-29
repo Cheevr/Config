@@ -139,6 +139,38 @@ class Config {
         this._override = override;
         this.tier = tier;
     }
+
+    /**
+     * Allows to add a default configuration, that sets any values that haven't been set yet.
+     * @param {Object|String} config    Either the filename/directory to a configuration or the configuration itself
+     */
+    addDefaultConfig(config) {
+        if (typeof config == 'string') {
+            let dir = path.isAbsolute(config) ? config : path.join(cwd, config);
+            let stat = fs.statSync(dir);
+            if (stat.isDirectory()) {
+                let files = fs.readdirSync(dir);
+                config = {};
+                for (let file of files) {
+                    let ext = path.extname(file);
+                    let name = path.basename(file, ext);
+                    if (ext == '.js' || ext == '.json') {
+                        config[name] = require(path.join(dir, file));
+                    }
+                }
+            }
+            else if (stat.isFile()) {
+                let ext = path.extname(config);
+                let name = path.basename(config, ext);
+                config = {
+                    [name]: require(dir)
+                };
+            } else {
+                console.log('The given path is invalid:', config);
+            }
+        }
+        this.__proto__.__proto__ = Object.assign(config, this.__proto__.__proto__);
+    }
 }
 
 module.exports = new Config();

@@ -67,4 +67,24 @@ describe('tiers', () => {
         expect(config.tier).to.equal('prod');
         expect(config.isProd).to.be.true;
     });
+
+    it('should allow to add a default config', () => {
+        config.reload();
+        config.addDefaultConfig({
+            moduleConfig: 'test'
+        });
+        expect(config.moduleConfig).to.equal('test');
+    });
+
+    it('should allow to add another default file for a subsection', () => {
+        config.reload();
+        config.addDefaultConfig(path.join(__dirname, 'data2/section.js'));
+        expect(config.section.subtype).to.equal('subsection');
+    });
+
+    it('should allow to add another default directory for a subsection', () => {
+        config.reload();
+        config.addDefaultConfig(path.join(__dirname, 'data2'));
+        expect(config.section.subtype).to.equal('subsection');
+    });
 });
