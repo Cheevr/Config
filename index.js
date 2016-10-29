@@ -169,7 +169,7 @@ class Config {
                 console.log('The given path is invalid:', config);
             }
         }
-        this.__proto__.__proto__ = Object.assign(config, this.__proto__.__proto__);
+        Object.assign(this.__proto__.__proto__, config, this.__proto__.__proto__);
     }
 }
 
