@@ -1,3 +1,6 @@
 module.exports = {
-    subtype: 'subsection'
+    subtype: 'subsection',
+    nested: {
+        val: 'default'
+    }
 };

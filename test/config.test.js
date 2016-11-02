@@ -87,4 +87,10 @@ describe('tiers', () => {
         config.addDefaultConfig(path.join(__dirname, 'data2'));
         expect(config.section.subtype).to.equal('subsection');
     });
+
+    it('should support deep copied configuration', () => {
+        config.reload('s');
+        config.addDefaultConfig(path.join(__dirname, 'data2'));
+        expect(config.section.nested.val).to.equal('staging');
+    });
 });

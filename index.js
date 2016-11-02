@@ -1,4 +1,5 @@
 var args = require('minimist')(process.argv.slice(2));
+var defaultsDeep = require('lodash/defaultsDeep');
 var fs = require('fs');
 var path = require('path');
 
@@ -169,7 +170,7 @@ class Config {
                 console.log('The given path is invalid:', config);
             }
         }
-        Object.assign(this.__proto__.__proto__, config, this.__proto__.__proto__);
+        defaultsDeep(this.__proto__.__proto__, config);
     }
 }
 
