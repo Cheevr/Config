@@ -54,7 +54,8 @@ class Config {
                     this._tier = path.parse(file).name;
                 }
             }
-            this.__proto__.__proto__ = Object.assign({}, defaultConfig, tierConfig, overrideConfig);
+            this.__proto__.__proto__ = overrideConfig;
+            defaultsDeep(this.__proto__.__proto__, tierConfig, defaultConfig);
         } catch(e) {
             this._tier = tier;
         }
