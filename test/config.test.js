@@ -93,4 +93,28 @@ describe('tiers', () => {
         config.addDefaultConfig(path.join(__dirname, 'data2'));
         expect(config.section.nested.val).to.equal('staging');
     });
+
+    it('should allow to append a value to a non existent config', () => {
+        config.reload('s');
+        config.appendValue('nested.nothing', 5);
+        expect(config.nested.nothing).to.deep.equal([ 5 ]);
+    });
+
+    it('should allow to append a value to an existent array config', () => {
+        config.reload('s');
+        config.appendValue('nested.array', 5);
+        expect(config.nested.array).to.deep.equal([ 3, 5 ]);
+    });
+
+    it('should allow to append values to an existent array config', () => {
+        config.reload('s');
+        config.appendValue('nested.array', 4, 5);
+        expect(config.nested.array).to.deep.equal([3, 4, 5]);
+    });
+
+    it('should allow to append a value to a non existent array config', () => {
+        config.reload('s');
+        config.appendValue('nested.nonarray', 5);
+        expect(config.nested.nonarray).to.deep.equal([1, 5]);
+    });
 });

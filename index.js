@@ -173,6 +173,38 @@ class Config {
         }
         defaultsDeep(this.__proto__.__proto__, config);
     }
+
+    /**
+     * Allows to append a value to a configuration. If the value existed before and was not
+     * an array, it will be converted to an array
+     * @param {string} key  The key to update, can be a complex key in the format "prop.subprop"
+     * @param {*} values     The value to append
+     */
+    appendValue(key, ...values) {
+        if (!values.length) {
+            return;
+        }
+        let props = key.split('.');
+        let last = props[props.length - 1];
+        let context = this;
+        for (let prop of props) {
+            if (prop != last) {
+                if (!context[prop]) {
+                    context[prop] = {};
+                }
+                context = context[prop];
+            } else {
+                if (!context[prop]) {
+                    context[prop] = [];
+                }
+            }
+        }
+        if (Array.isArray(context[last])) {
+            context[last].push(...values);
+        } else {
+            context[last] = [ context[last], ...values ];
+        }
+    }
 }
 
 module.exports = new Config();

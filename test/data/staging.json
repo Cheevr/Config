@@ -6,5 +6,11 @@
     "nested": {
       "val": "staging"
     }
-  }
+  },
+  "nested": {
+    "nonarray": 1,
+    "array": [ 3 ]
+  },
+  "nonarray": 1,
+  "array": [ 3 ]
 }
