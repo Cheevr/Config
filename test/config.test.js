@@ -124,7 +124,7 @@ describe('tiers', () => {
     });
 
     it('should normalize multiple paths', () => {
-        let paths = config.normalizePath('/some/home/dir', 'a/relative/path', '/an/absolute/path');
+        let paths = config.normalizePath('/some/home/dir', [ 'a/relative/path' ], '/an/absolute/path');
         expect(paths).to.deep.equal(['/some/home/dir/a/relative/path', '/an/absolute/path']);
     });
 });
