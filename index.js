@@ -1,7 +1,7 @@
-var args = require('minimist')(process.argv.slice(2));
-var defaultsDeep = require('lodash/defaultsDeep');
-var fs = require('fs');
-var path = require('path');
+const args = require('minimist')(process.argv.slice(2));
+const defaultsDeep = require('lodash/defaultsDeep');
+const fs = require('fs');
+const path = require('path');
 
 
 /**

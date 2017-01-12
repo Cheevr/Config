@@ -1,6 +1,6 @@
-var config = require('..');
-var expect = require('chai').expect;
-var path = require('path');
+const config = require('..');
+const expect = require('chai').expect;
+const path = require('path');
 
 describe('tiers', () => {
     it('should set the tier to development by default', () => {
@@ -76,8 +76,14 @@ describe('tiers', () => {
         expect(config.moduleConfig).to.equal('test');
     });
 
+    it('should use the default config even if there is no config directory', () => {
+        config.reload('d', path.join(__dirname, '/nowhere'));
+        config.addDefaultConfig(path.join(__dirname, 'data2/section.js'));
+        expect(config.section.subtype).to.equal('subsection');
+    });
+
     it('should allow to add another default file for a subsection', () => {
-        config.reload();
+        config.reload('d', path.join(__dirname, 'data'));
         config.addDefaultConfig(path.join(__dirname, 'data2/section.js'));
         expect(config.section.subtype).to.equal('subsection');
     });
