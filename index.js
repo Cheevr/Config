@@ -67,6 +67,8 @@ class Config {
         for (let prop in config) {
             if (this[prop] === undefined) {
                 this[prop] = config[prop];
+            } else {
+                defaultsDeep(this[prop], config[prop]);
             }
         }
     }
