@@ -54,12 +54,21 @@ class Config {
                     this._tier = path.parse(file).name;
                 }
             }
-            this.__proto__.__proto__ = overrideConfig;
-            defaultsDeep(this.__proto__.__proto__, tierConfig, defaultConfig);
+            this._apply(overrideConfig);
+            this._apply(tierConfig);
+            this._apply(defaultConfig);
         } catch(e) {
             this._tier = tier;
         }
         this.prodNames = this.prodNames || ['production', 'prod', 'p'];
+    }
+
+    _apply(config) {
+        for (let prop in config) {
+            if (this[prop] === undefined) {
+                this[prop] = config[prop];
+            }
+        }
     }
 
     /**
@@ -136,7 +145,11 @@ class Config {
      * @param {string} [override]   An additional configuration that will override tier and default config if set.
      */
     reload(tier = this.tier, dir = this._dir, override) {
-        delete this._tier;
+        for (let prop in this) {
+            if (this.hasOwnProperty(prop)) {
+                delete this[prop];
+            }
+        }
         this._dir = path.isAbsolute(dir) ? dir : path.join(cwd, dir);
         this._override = override;
         this.tier = tier;
@@ -171,39 +184,7 @@ class Config {
                 console.log('The given path is invalid:', config);
             }
         }
-        defaultsDeep(this.__proto__.__proto__, config);
-    }
-
-    /**
-     * Allows to append a value to a configuration. If the value existed before and was not
-     * an array, it will be converted to an array
-     * @param {string} key  The key to update, can be a complex key in the format "prop.subprop"
-     * @param {*} values     The value to append
-     */
-    appendValue(key, ...values) {
-        if (!values.length) {
-            return;
-        }
-        let props = key.split('.');
-        let last = props[props.length - 1];
-        let context = this;
-        for (let prop of props) {
-            if (prop != last) {
-                if (!context[prop]) {
-                    context[prop] = {};
-                }
-                context = context[prop];
-            } else {
-                if (!context[prop]) {
-                    context[prop] = [];
-                }
-            }
-        }
-        if (Array.isArray(context[last])) {
-            context[last].push(...values);
-        } else {
-            context[last] = [ context[last], ...values ];
-        }
+        this._apply(config);
     }
 
     /**
