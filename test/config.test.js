@@ -6,13 +6,13 @@ describe('tiers', () => {
     it('should set the tier to development by default', () => {
         config.reload();
         expect(config.tier).to.equal('development');
-        expect(config.dir).to.equal(path.join(path.dirname(require.main.filename), 'config'));
+        expect(config.dir).to.equal(path.join(process.cwd(), 'config'));
     });
 
     it('should reload the configuration from a new directory', () => {
         config.reload('prod', 'testconfig');
         expect(config.tier).to.equal('prod');
-        expect(config.dir).to.equal(path.join(path.dirname(require.main.filename), 'testconfig'));
+        expect(config.dir).to.equal(path.join(process.cwd(), 'testconfig'));
     });
 
     it('should load the default configuration', () => {
@@ -80,6 +80,14 @@ describe('tiers', () => {
         config.reload('d', path.join(__dirname, '/nowhere'));
         config.addDefaultConfig(path.join(__dirname, 'data2/section.js'));
         expect(config.section.subtype).to.equal('subsection');
+    });
+
+    it('should reset the configuration if it reloads the same file twice', () => {
+        config.reload('d', path.join(__dirname, '/nowhere'));
+        config.addDefaultConfig(path.join(__dirname, 'data2/section.js'));
+        expect(config.section.subtype).to.equal('subsection');
+        config.reload('d', path.join(__dirname, '/nowhere'));
+        expect(config.section).to.be.undefined;
     });
 
     it('should allow to add another default file for a subsection', () => {

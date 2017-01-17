@@ -7,7 +7,7 @@ const path = require('path');
 /**
  * The root directory of the code that is being run right now.
  */
-const cwd = path.dirname(require.main.filename);
+const cwd = process.cwd();
 
 /**
  * Configurations will be loaded based on the prefix given through the tier, meaning that tier d would resolve to
