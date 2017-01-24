@@ -83,7 +83,7 @@ class Config {
         let tier = process.env.NODE_CONF_TIER || process.env.NODE_ENV || 'development';
         tier = args.t || args.tier || tier;
         this.tier = tier;
-        return this.tier;
+        return this._tier;
     }
 
     /**
