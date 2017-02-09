@@ -155,14 +155,20 @@ class Config {
         this._dir = path.isAbsolute(dir) ? dir : path.join(cwd, dir);
         this._override = override;
         this.tier = tier;
+        return this;
     }
 
     /**
      * Allows to add a default configuration, that sets any values that haven't been set yet.
-     * @param {Object|String} config    Either the filename/directory to a configuration or the configuration itself
+     * @param {Object|string} config    Either the filename/directory to a configuration or the configuration itself
+     * @param {string} pathComponents   Additional path components if the first argument is a string (avoids you
+     *                                  having to join them manually)
      */
-    addDefaultConfig(config) {
+    addDefaultConfig(config, ...pathComponents) {
         if (typeof config == 'string') {
+            if (arguments.length > 1) {
+                config = path.join(config, ...pathComponents);
+            }
             let dir = path.isAbsolute(config) ? config : path.join(cwd, config);
             let stat = fs.statSync(dir);
             if (stat.isDirectory()) {
@@ -187,6 +193,7 @@ class Config {
             }
         }
         this._apply(config);
+        return this;
     }
 
     /**

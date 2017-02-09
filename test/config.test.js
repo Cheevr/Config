@@ -102,6 +102,12 @@ describe('tiers', () => {
         expect(config.section.subtype).to.equal('subsection');
     });
 
+    it('should allow to add another default directory split up in parts', () => {
+        config.reload();
+        config.addDefaultConfig(__dirname, 'data2');
+        expect(config.section.subtype).to.equal('subsection');
+    });
+
     it('should support deep copied configuration', () => {
         config.reload('s');
         config.addDefaultConfig(path.join(__dirname, 'data2'));

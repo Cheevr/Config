@@ -1,6 +1,6 @@
 {
   "name": "cheevr-config",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A module that reads configuration files from disks",
   "private": true,
   "main": "index.js",
