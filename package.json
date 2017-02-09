@@ -5,7 +5,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha -- --recursive"
+    "test": "istanbul cover _mocha -- --recursive",
+    "test-travis": "istanbul cover _mocha --report lcovonly -- -R spec --recursive"
   },
   "engine": {
     "node": ">=6.4"
@@ -28,6 +29,7 @@
   "homepage": "https://github.com/Cheevr/Config#readme",
   "devDependencies": {
     "chai": "^3",
+    "coveralls": "^2",
     "istanbul": "^0.4",
     "mocha": "^3"
   },
