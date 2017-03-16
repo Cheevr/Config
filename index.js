@@ -173,26 +173,25 @@ class Config {
             let stat = fs.statSync(dir);
             if (stat.isDirectory()) {
                 let files = fs.readdirSync(dir);
-                config = {};
                 for (let file of files) {
                     let ext = path.extname(file);
-                    let name = path.basename(file, ext);
                     if (ext == '.js' || ext == '.json') {
-                        config[name] = require(path.join(dir, file));
+                        let name = path.basename(file, ext);
+                        let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(path.join(dir, file)));
+                        this._apply(result);
                     }
                 }
-            }
-            else if (stat.isFile()) {
+            } else if (stat.isFile()) {
                 let ext = path.extname(config);
                 let name = path.basename(config, ext);
-                config = {
-                    [name]: require(dir)
-                };
+                let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(dir));
+                this._apply(result);
             } else {
                 console.log('The given path is invalid:', config);
             }
+        } else {
+            this._apply(config);
         }
-        this._apply(config);
         return this;
     }
 

@@ -1,3 +1,4 @@
+/* global describe, it, afterEach, beforeEach, after, before */
 const config = require('..');
 const expect = require('chai').expect;
 const path = require('path');
@@ -96,10 +97,17 @@ describe('tiers', () => {
         expect(config.section.subtype).to.equal('subsection');
     });
 
+    it('should allow nested subsections fort default files', () => {
+        config.reload('d', path.join(__dirname, 'data'));
+        config.addDefaultConfig(path.join(__dirname, 'data2/section.subsection.js'));
+        expect(config.section.subsection.subSubSection).to.be.true;
+    });
+
     it('should allow to add another default directory for a subsection', () => {
         config.reload();
         config.addDefaultConfig(path.join(__dirname, 'data2'));
         expect(config.section.subtype).to.equal('subsection');
+        expect(config.section.subsection.subSubSection).to.be.true;
     });
 
     it('should allow to add another default directory split up in parts', () => {
