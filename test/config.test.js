@@ -24,6 +24,12 @@ describe('tiers', () => {
         expect(config.stagingprop).to.be.not.ok;
     });
 
+    it('should include all source files when loading configurations', () => {
+        config.reload('prod', path.join(__dirname, 'data'));
+        expect(config._sources).to.include(path.join(__dirname, '/data/default.json'));
+        expect(config._sources).to.include(path.join(__dirname, '/data/prod.json'));
+    });
+
     it('should load the development config', () => {
         config.reload('d', path.join(__dirname, 'data'));
         expect(config.tier).to.equal('development');
@@ -81,6 +87,7 @@ describe('tiers', () => {
         config.reload('d', path.join(__dirname, '/nowhere'));
         config.addDefaultConfig(path.join(__dirname, 'data2/section.js'));
         expect(config.section.subtype).to.equal('subsection');
+        expect(config._sources).to.include(path.join(__dirname, '/data2/section.js'));
     });
 
     it('should reset the configuration if it reloads the same file twice', () => {

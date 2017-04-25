@@ -29,6 +29,7 @@ const cwd = process.cwd();
  */
 class Config {
     constructor() {
+        this._sources = [];
         this._load(this.tier);
     }
 
@@ -44,15 +45,19 @@ class Config {
             let tierConfig = {};
             let overrideConfig = {};
             for (let file of files) {
+                let fullPath = path.join(this.dir, file);
                 if (file.startsWith(this.default)) {
-                    defaultConfig = require(path.join(this.dir, file));
+                    defaultConfig = require(fullPath);
                     this._tier = this._tier || path.parse(file).name;
                 } else if (file.startsWith(this.override)) {
-                    overrideConfig = require(path.join(this.dir, file));
+                    overrideConfig = require(fullPath);
                 } else if (file.startsWith(tier)) {
-                    tierConfig = require(path.join(this.dir, file));
+                    tierConfig = require(fullPath);
                     this._tier = path.parse(file).name;
+                } else {
+                    continue;
                 }
+                this._sources.push(fullPath)
             }
             this._apply(overrideConfig);
             this._apply(tierConfig);
@@ -154,6 +159,7 @@ class Config {
         }
         this._dir = path.isAbsolute(dir) ? dir : path.join(cwd, dir);
         this._override = override;
+        this._sources = [];
         this.tier = tier;
         return this;
     }
@@ -165,7 +171,7 @@ class Config {
      *                                  having to join them manually)
      */
     addDefaultConfig(config, ...pathComponents) {
-        if (typeof config == 'string') {
+        if (typeof config === 'string') {
             if (arguments.length > 1) {
                 config = path.join(config, ...pathComponents);
             }
@@ -175,10 +181,12 @@ class Config {
                 let files = fs.readdirSync(dir);
                 for (let file of files) {
                     let ext = path.extname(file);
-                    if (ext == '.js' || ext == '.json') {
+                    if (ext === '.js' || ext === '.json') {
+                        let fullPath = path.join(dir, file);
                         let name = path.basename(file, ext);
-                        let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(path.join(dir, file)));
+                        let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(fullPath));
                         this._apply(result);
+                        this._sources.push(fullPath);
                     }
                 }
             } else if (stat.isFile()) {
@@ -186,6 +194,7 @@ class Config {
                 let name = path.basename(config, ext);
                 let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(dir));
                 this._apply(result);
+                this._sources.push(dir);
             } else {
                 console.log('The given path is invalid:', config);
             }
