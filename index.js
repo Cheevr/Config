@@ -1,5 +1,6 @@
 const args = require('minimist')(process.argv.slice(2));
 const defaultsDeep = require('lodash/defaultsDeep');
+const EventEmitter = require('events').EventEmitter
 const fs = require('fs');
 const path = require('path');
 
@@ -26,9 +27,11 @@ const cwd = process.cwd();
  * override:    NODE_CONF_OVERRIDE          -o --override           The filename prefix for the override config
  * tier:        NODE_CONF_TIER, NODE_ENV    -t --tier               The tier for which to load the config
  *
+ * @fires {Config} change
  */
-class Config {
+class Config extends EventEmitter {
     constructor() {
+        super();
         this._sources = [];
         this._load(this.tier);
     }
@@ -62,6 +65,7 @@ class Config {
             this._apply(overrideConfig);
             this._apply(tierConfig);
             this._apply(defaultConfig);
+            this.emit('change', this);
         } catch(e) {
             this._tier = tier;
         }
@@ -153,13 +157,14 @@ class Config {
      */
     reload(tier = this.tier, dir = this._dir, override) {
         for (let prop in this) {
-            if (this.hasOwnProperty(prop)) {
+            if (prop[0] !== '_' && this.hasOwnProperty(prop)) {
                 delete this[prop];
             }
         }
         this._dir = path.isAbsolute(dir) ? dir : path.join(cwd, dir);
         this._override = override;
         this._sources = [];
+        delete this._tier;
         this.tier = tier;
         return this;
     }
@@ -201,6 +206,7 @@ class Config {
         } else {
             this._apply(config);
         }
+        this.emit('change', this);
         return this;
     }
 

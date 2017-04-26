@@ -138,4 +138,14 @@ describe('tiers', () => {
         let paths = config.normalizePath('/some/home/dir', [ 'a/relative/path' ], '/an/absolute/path');
         expect(paths).to.deep.equal(['/some/home/dir/a/relative/path', '/an/absolute/path']);
     });
+
+    it('should emit an event when the configuration has changed', done => {
+        config.reload();
+        config.once('change', config => {
+            expect(config.section.subtype).to.equal('subsection');
+            expect(config.section.subsection.subSubSection).to.be.true;
+            done();
+        });
+        config.addDefaultConfig(path.join(__dirname, 'data2'));
+    });
 });
