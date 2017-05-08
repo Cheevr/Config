@@ -1,6 +1,6 @@
 const args = require('minimist')(process.argv.slice(2));
 const defaultsDeep = require('lodash/defaultsDeep');
-const EventEmitter = require('events').EventEmitter
+const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
 const path = require('path');
 
@@ -8,7 +8,7 @@ const path = require('path');
 /**
  * The root directory of the code that is being run right now.
  */
-const cwd = process.cwd();
+const cwd = process.env.NODE_CWD || process.cwd();
 
 /**
  * Configurations will be loaded based on the prefix given through the tier, meaning that tier d would resolve to
