@@ -60,6 +60,7 @@ class Config extends EventEmitter {
                 } else {
                     continue;
                 }
+                // TODO sometimes sources are added twice (not necessarily at this code location)
                 this._sources.push(fullPath)
             }
             this._apply(overrideConfig);
