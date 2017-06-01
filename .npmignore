@@ -1,0 +1,6 @@
+test/
+coverage/
+logs/
+.idea/
+.gitignore
+.nyc_output/

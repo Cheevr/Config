@@ -1,14 +1,10 @@
 {
   "name": "@cheevr/config",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A module that reads configuration files from disks",
   "main": "index.js",
-  "scripts": {
-    "test": "istanbul cover _mocha -- --recursive",
-    "test-travis": "istanbul cover _mocha --report lcovonly -- -R spec --recursive"
-  },
   "engine": {
-    "node": ">=6.4"
+    "node": ">=7.10.0"
   },
   "repository": {
     "type": "git",
@@ -26,14 +22,18 @@
     "url": "https://github.com/Cheevr/Config/issues"
   },
   "homepage": "https://github.com/Cheevr/Config#readme",
-  "devDependencies": {
-    "chai": "^3",
-    "coveralls": "^2",
-    "istanbul": "^0.4",
-    "mocha": "^3"
-  },
   "dependencies": {
     "lodash": "^4",
     "minimist": "^1"
+  },
+  "devDependencies": {
+    "chai": "^4",
+    "coveralls": "^2",
+    "mocha": "^3",
+    "nyc": "^11"
+  },
+  "scripts": {
+    "test": "nyc --reporter=text --reporter=html mocha --recursive",
+    "test-travis": "nyc --reporter=text-lcov mocha --recursive | coveralls"
   }
 }
