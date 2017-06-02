@@ -4,7 +4,7 @@
   "description": "A module that reads configuration files from disks",
   "main": "index.js",
   "engine": {
-    "node": ">=7.10.0"
+    "node": ">8.0"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,6 @@
   },
   "scripts": {
     "test": "nyc --reporter=text --reporter=html mocha --recursive",
-    "test-travis": "nyc --reporter=text-lcov mocha --recursive | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   }
 }
