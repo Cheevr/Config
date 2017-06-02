@@ -4,3 +4,5 @@ logs/
 .idea/
 .gitignore
 .nyc_output/
+.travis.yml
+.npmignore
