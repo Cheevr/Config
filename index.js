@@ -70,7 +70,7 @@ class Config extends EventEmitter {
         } catch(e) {
             this._tier = tier;
         }
-        this.prodNames = this.prodNames || ['production', 'prod', 'p'];
+        this.prodNames = this.prodNames || ['production', 'prod', 'pro', 'p'];
     }
 
     _apply(config) {

@@ -151,7 +151,7 @@ Readonly property that will return the name of the default file.
 ### Config.isProd()
 
 Readonly property that will return true if the configurtion has loaded a file called either
-**production**, **prod** or **p**.
+**production**, **prod**, **pro** or **p**.
 
 ### Config.reload({string} [tier], {string} [dir], {string} [override])
 
