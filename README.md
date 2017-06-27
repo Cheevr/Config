@@ -192,6 +192,22 @@ Will normalize one or more paths but making them absolute in relation to the giv
 is more of a helper, but some external modules will want to make use of it.
 
 
+## Events
+
+The config will emit an event whenever a configuration is loaded through one of it's methods.
+
+### change
+
+You can react to changes when configuration is being reloaded by registering an event listener:
+
+```JavaScript
+config.on('change', config => {});
+```
+
+Note that this event is only triggered when one of the methods on the config object is used and not
+when an arbitrary property is changed.
+
+
 ## Examples
 
 For more examples check out the test directory.
@@ -203,3 +219,4 @@ For more examples check out the test directory.
 * YAML support
 * CWD command line option for all the environment variable settings (if possible)
 * Setters for ```dir```, ```override``` and ```default```
+* Wrap with a Proxy so that setting properties can fire an event on change
