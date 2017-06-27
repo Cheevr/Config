@@ -1,4 +1,4 @@
-# Cheevr-Config
+# Config
 [![npm version](https://badge.fury.io/js/%40cheevr%2Fconfig.svg)](https://badge.fury.io/js/%40cheevr%2Fconfig)
 [![Build Status](https://travis-ci.org/Cheevr/Config.svg?branch=master)](https://travis-ci.org/Cheevr/Config)
 [![Coverage Status](https://coveralls.io/repos/Cheevr/Config/badge.svg?branch=master&service=github)](https://coveralls.io/github/Cheevr/Config?branch=master)
@@ -91,8 +91,11 @@ Some identifiers that will work in the example could be **p**, **pro**, **prod**
 
 The library is looking for 2 parameters passed to a program using this configuration method:
 
-* ```-t```: Specifies the tier to load during phase 2 of the loading process
-* ```-o```: Specifies the name of the overwrite config file loaded during phase 3
+* ```-t, --tier```: Specifies the tier to load during phase 2 of the loading process
+* ```-o, --override```: Specifies the name of the overwrite config file loaded during phase 3
+* ```-d, --dir, --directory```: Specifies the directory in which to look for configurations (defaults to **config/** relative to cwd)
+* ```-s, --default```: Specifies name of the default file to load (defaults to **default**)
+* ```-c, --cwd```: Specifies the root directory to reference when using relative paths
 
 ### Environment Variables
 
@@ -103,7 +106,7 @@ used if no command line parameters have been passed in to overwrite them (where 
 * ```NODE_ENV```: Used as a fallback if **NODE_CONF_TIER** has not been set.
 * ```NODE_CONF_DEFAULT```: Used to specify the name of the default file (defaults to **default**)
 * ```NODE_CONF_OVERRIDE```: Used in place of the override file
-* ```NODE_CONF_DIR```: The directory from which to load (defaults to **config/**)
+* ```NODE_CONF_DIR```: The directory from which to load (defaults to **config/** relative to cwd)
 * ```NODE_CWD```: Specifies the root directory in which we expect to find **NODE_CONF_DIR** (defaults to cwd)
 
 ### Programmatically
@@ -217,6 +220,5 @@ For more examples check out the test directory.
 
 * Support for splitting up config files not just module configurations
 * YAML support
-* CWD command line option for all the environment variable settings (if possible)
 * Setters for ```dir```, ```override``` and ```default```
 * Wrap with a Proxy so that setting properties can fire an event on change

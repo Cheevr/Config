@@ -8,7 +8,7 @@ const path = require('path');
 /**
  * The root directory of the code that is being run right now.
  */
-const cwd = process.env.NODE_CWD || process.cwd();
+const cwd = args.c || args.cwd || process.env.NODE_CWD || process.cwd();
 
 /**
  * Configurations will be loaded based on the prefix given through the tier, meaning that tier d would resolve to
@@ -26,6 +26,7 @@ const cwd = process.env.NODE_CWD || process.cwd();
  * default:     NODE_CONF_DEFAULT           -s --default            The filename prefix for the default config
  * override:    NODE_CONF_OVERRIDE          -o --override           The filename prefix for the override config
  * tier:        NODE_CONF_TIER, NODE_ENV    -t --tier               The tier for which to load the config
+ * cwd:         NODE_CWD                    -c --cwd                The root directory used to determine relative path locations
  *
  * @fires {Config} change
  */
@@ -90,9 +91,7 @@ class Config extends EventEmitter {
         if (this._tier) {
             return this._tier;
         }
-        let tier = process.env.NODE_CONF_TIER || process.env.NODE_ENV || 'development';
-        tier = args.t || args.tier || tier;
-        this.tier = tier;
+        this.tier = args.t || args.tier || process.env.NODE_CONF_TIER || process.env.NODE_ENV || 'development';
         return this._tier;
     }
 
@@ -111,8 +110,7 @@ class Config extends EventEmitter {
         if (this._dir) {
             return this._dir;
         }
-        this._dir = process.env.NODE_CONF_DIR || path.join(cwd, 'config');
-        this._dir = args.directory || args.dir || args.d || this._dir;
+        this._dir = args.directory || args.dir || args.d || process.env.NODE_CONF_DIR || path.join(cwd, 'config');
         return this._dir;
     }
 
@@ -124,8 +122,7 @@ class Config extends EventEmitter {
         if (this._override) {
             return this._override;
         }
-        this._override = process.env.NODE_CONF_OVERRIDE || false;
-        this._override = args.override || args.o || this._override;
+        this._override = args.override || args.o || process.env.NODE_CONF_OVERRIDE || false;
         return this._override;
     }
 
@@ -137,8 +134,7 @@ class Config extends EventEmitter {
         if (this._default) {
             return this._default;
         }
-        this._default = process.env.NODE_CONF_DEFAULT || 'default.';
-        this._default = args.s || args.default || this._default;
+        this._default = args.s || args.default || process.env.NODE_CONF_DEFAULT || 'default.';
         return this._default;
     }
 
