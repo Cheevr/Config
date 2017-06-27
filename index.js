@@ -212,7 +212,7 @@ class Config extends EventEmitter {
     }
 
     /**
-     * Will normalize a given path a return an array with all paths being absolute.
+     * Will normalize a given path and return an array with all paths being absolute.
      * @param {string} cwd          The current working directory that all relative paths should originate from
      * @param {string|string[]} dir The directories to parse into an absolute path
      * @returns {string[]}  An array with absolute paths
