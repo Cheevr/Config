@@ -14,6 +14,7 @@ the implementation favors convention over configuration, there are options to cu
 where and how configurations are loaded.
 The configuration system is tier aware so that multiple configuration can be loaded depending
 on the tier you're running your software (see examples).
+The library supports reading configurations from .js, .json and .yaml files transparently.
 
 
 ## Simple Usage
@@ -219,6 +220,5 @@ For more examples check out the test directory.
 ## Future Features for Consideration
 
 * Support for splitting up config files not just module configurations
-* YAML support
 * Setters for ```dir```, ```override``` and ```default```
 * Wrap with a Proxy so that setting properties can fire an event on change

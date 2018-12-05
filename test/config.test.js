@@ -148,4 +148,19 @@ describe('tiers', () => {
         });
         config.addDefaultConfig(path.join(__dirname, 'data2'));
     });
+    
+    it('should support Yaml files as a source', () => {
+      config.reload('qa', path.join(__dirname, 'data'));
+      expect(config._sources).to.include(path.join(__dirname, '/data/qa.yaml'));
+      expect(config.prop1.prop2).to.equal('test5');
+    });
+  
+    it('should support Yml files as a source', () => {
+      config.reload('test', path.join(__dirname, 'data'));
+      expect(config._sources).to.include(path.join(__dirname, '/data/test.yml'));
+      expect(config.yamlString).to.equal('blah');
+      expect(config.yamlNumber).to.equal(1);
+      expect(config.yamlFloat).to.equal(2.1);
+      expect(config.yamlBool).to.equal(true);
+    });
 });

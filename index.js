@@ -3,6 +3,7 @@ const defaultsDeep = require('lodash/defaultsDeep');
 const EventEmitter = require('events').EventEmitter;
 const fs = require('fs');
 const path = require('path');
+const yaml = require('yaml');
 
 
 /**
@@ -28,7 +29,7 @@ const cwd = args.c || args.cwd || process.env.NODE_CWD || process.cwd();
  * tier:        NODE_CONF_TIER, NODE_ENV    -t --tier               The tier for which to load the config
  * cwd:         NODE_CWD                    -c --cwd                The root directory used to determine relative path locations
  *
- * @fires {Config} change
+ * @fires Config#Config:change
  */
 class Config extends EventEmitter {
     constructor() {
@@ -51,12 +52,12 @@ class Config extends EventEmitter {
             for (let file of files) {
                 let fullPath = path.join(this.dir, file);
                 if (file.startsWith(this.default)) {
-                    defaultConfig = require(fullPath);
+                    defaultConfig = this._readFile(fullPath);
                     this._tier = this._tier || path.parse(file).name;
                 } else if (file.startsWith(this.override)) {
-                    overrideConfig = require(fullPath);
+                    overrideConfig = this._readFile(fullPath);
                 } else if (file.startsWith(tier)) {
-                    tierConfig = require(fullPath);
+                    tierConfig = this._readFile(fullPath);
                     this._tier = path.parse(file).name;
                 } else {
                     continue;
@@ -73,7 +74,33 @@ class Config extends EventEmitter {
         }
         this.prodNames = this.prodNames || ['production', 'prod', 'pro', 'p'];
     }
-
+  
+  /**
+   * Reads a file and return the content as json object. Supports .js, JSON and YAML.
+   * @param {String} fullPath
+   * @returns {object}
+   * @private
+   */
+    _readFile(fullPath) {
+      let ext = path.extname(fullPath);
+      switch (ext) {
+        case '.js':
+        case '.json':
+          return require(fullPath);
+        case '.yml':
+        case '.yaml':
+          return yaml.parse(fs.readFileSync(fullPath, 'utf8'));
+        default:
+          throw new Error('Unknown config file format');
+      }
+    }
+  
+  /**
+   * Applies all configuration in the given object to this instance of Config, so that they can be used directly via
+   * properties (e.g. config.myprop).
+   * @param {object} config
+   * @private
+   */
     _apply(config) {
         for (let prop in config) {
             if (this[prop] === undefined) {
@@ -183,10 +210,10 @@ class Config extends EventEmitter {
                 let files = fs.readdirSync(dir);
                 for (let file of files) {
                     let ext = path.extname(file);
-                    if (ext === '.js' || ext === '.json') {
+                    if (ext === '.js' || ext === '.json' || ext === '.yml' || ext === '.yaml') {
                         let fullPath = path.join(dir, file);
                         let name = path.basename(file, ext);
-                        let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(fullPath));
+                        let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), this._readFile(fullPath));
                         this._apply(result);
                         this._sources.push(fullPath);
                     }
@@ -194,7 +221,7 @@ class Config extends EventEmitter {
             } else if (stat.isFile()) {
                 let ext = path.extname(config);
                 let name = path.basename(config, ext);
-                let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), require(dir));
+                let result = name.split('.').reduceRight((prev, curr) => ({[curr]: prev}), this._readFile(dir));
                 this._apply(result);
                 this._sources.push(dir);
             } else {
