@@ -2,3 +2,6 @@ yamlString: blah
 yamlNumber: 1
 yamlFloat: 2.1
 yamlBool: true
+yamlJSON: {"jsonProp":"jsonVal"}
+java:
+  home: /dev/null

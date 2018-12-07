@@ -97,6 +97,8 @@ The library is looking for 2 parameters passed to a program using this configura
 * ```-d, --dir, --directory```: Specifies the directory in which to look for configurations (defaults to **config/** relative to cwd)
 * ```-s, --default```: Specifies name of the default file to load (defaults to **default**)
 * ```-c, --cwd```: Specifies the root directory to reference when using relative paths
+* ```-n, --noenv```: If set to true, the library will not attempt to apply environment overrides
+* ```-m, --mapseparator```: The separator used for mapping environment variable overrides onto doc trees
 
 ### Environment Variables
 
@@ -109,6 +111,26 @@ used if no command line parameters have been passed in to overwrite them (where 
 * ```NODE_CONF_OVERRIDE```: Used in place of the override file
 * ```NODE_CONF_DIR```: The directory from which to load (defaults to **config/** relative to cwd)
 * ```NODE_CWD```: Specifies the root directory in which we expect to find **NODE_CONF_DIR** (defaults to cwd)
+* ```NODE_IGNORE_ENV```: If set to true, the library will not attempt to apply environment overrides
+* ```NODE_ENV_MAP_SEPARATOR```: The separator used for mapping environment variable overrides onto doc trees 
+
+### Environment Variable Overrides
+
+This library allows you to override any configuration by setting environment variables. Environment
+Variables will be mapped using a mapping separator to determine nested documents and allow overrides
+of more complex settings. The default separator can be changed using the command line option 
+```--mapseparator``` or the environment variable ```NODE_ENV_MAP_SEPARATOR``` and defaults to ```_```.
+
+An environment variable to override a config such as ```{ prop1: { prop2: 1.0} }``` can be overridden
+with an environment variable called ```PROP1_PROP2=2.0``` (assuming the separator is the default ```_```).
+
+Note that the library will try to ignore case when applying environment variables to existing properties, 
+otherwise it will default to apply all keys with lower case.
+
+The library also will try to parse any value as JSON document. This will allow you to set more complex properties using
+environment variables. However, merging of complex json documents with existing configurations is not supported and 
+a set environment variable will overwrite that mapped property with the json value, removing all previous object 
+properties on that leaf of the json configuration  tree.
 
 ### Programmatically
 

@@ -162,5 +162,11 @@ describe('tiers', () => {
       expect(config.yamlNumber).to.equal(1);
       expect(config.yamlFloat).to.equal(2.1);
       expect(config.yamlBool).to.equal(true);
+      expect(config.yamlJSON).to.deep.equal({jsonProp:'jsonVal'})
+    });
+    
+    it('should override configurations with environment values', () => {
+      config.reload('t', path.join(__dirname, 'data'));
+      expect(config.home.java).to.not.equal('/dev/null');
     });
 });
